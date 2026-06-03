@@ -1,0 +1,52 @@
+# manifest.yaml — single source of truth for version and compatibility metadata.
+#
+# When releasing, update this file. There is no separate VERSION file.
+# See CONTRIBUTING.md "Release process" for the full release checklist.
+
+version: 1.0.0
+released: 2026-06-03
+
+# Paths shipped by THIS repo (upstream).
+# Note: consumers may place rule files at IDE-specific paths on their own machines
+# (e.g., .aidlc/, .amazonq/) — those consumer-side paths are documented inside the
+# rule content (core-workflow.md), NOT here. This list reflects only what this
+# repository ships.
+shipped_paths:
+  - .kiro/
+  - .bob/
+
+# Rule packs shipped in this release. Each rule pack is independently versioned
+# so consumers can reason about which sub-component changed.
+rule_packs:
+  - name: aws-aidlc-rules
+    version: 1.0.0
+    status: stable
+
+# Extensions shipped in this release.
+# Each opt-in extension provides a *.opt-in.md sentinel that the workflow
+# surfaces during requirements analysis; the full rules file is loaded only
+# when the user opts in.
+extensions:
+  - name: security/baseline
+    status: opt-in
+  - name: testing/property-based
+    status: opt-in
+
+# Breaking changes introduced in releases at or after the corresponding `since`.
+# Schema example (uncomment and populate when introducing a breaking change):
+#
+# breaking_changes:
+#   - rule: inception/workflow-planning
+#     description: "Removed deprecated 'legacy-mode' flag"
+#     since: "2.0.0"
+breaking_changes: []
+
+# Deprecations that are scheduled for removal in a future MAJOR.
+# Schema example (uncomment and populate when deprecating something):
+#
+# deprecations:
+#   - rule: common/old-rule-name
+#     replacement: common/new-rule-name
+#     since: "1.2.0"
+#     remove_in: "2.0.0"
+deprecations: []
