@@ -46,6 +46,13 @@ The current version, release date, shipped paths, and compatibility metadata liv
 
 ### Changed
 
+- **Code-generation discipline now always-on.** `construction/code-generation.md` gains two
+  Critical Rules subsections — **Simplicity First** (minimum code that satisfies the approved
+  plan/stories; NFR/infra-mandated patterns are in scope, not over-engineering) and **Surgical
+  Changes** (touch only plan-named files, modify in-place, no opportunistic refactors, flag —
+  don't delete — dead code) — applied on every unit (no opt-in). Mirrored in `.kiro/` and
+  `.bob/`. Derived from Andrej Karpathy's coding guidelines (MIT).
+
 ### Deprecated
 
 ### Removed
