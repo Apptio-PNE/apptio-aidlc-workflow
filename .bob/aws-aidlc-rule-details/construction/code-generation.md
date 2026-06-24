@@ -190,11 +190,32 @@ This stage generates code for each unit of work through two integrated parts:
 - If doesn't exist: Create new file
 - Verify no duplicate files after generation (Step 12)
 
+### Simplicity First
+- Generate the minimum code that satisfies the approved plan and the unit's mapped stories
+- No speculative features, abstractions, configuration knobs, or extensibility hooks that the
+  design artifacts do not require ("we might need it later" is not a justification)
+- No error handling for cases that cannot occur given the design's stated inputs and invariants
+- Patterns mandated by NFR or infrastructure design artifacts are in scope by definition —
+  never treat a design-required pattern as over-engineering
+- If following the approved design appears to require more code, the design wins (see
+  Generation Phase Rules: FOLLOW PLAN EXACTLY) — never simplify by deviating from the design
+
+### Surgical Changes
+- Touch only files named in the approved plan; if another file must change, note it (with a
+  one-line justification) in the completion summary
+- Modify files in-place; never create parallel copies (reinforces Brownfield File Modification
+  Rules above)
+- Do not refactor or "improve" code adjacent to the change that the plan did not call for —
+  no opportunistic cleanup
+- Match the existing style and conventions of any file being edited
+- Flag pre-existing dead code for the user; never delete it as part of an unrelated change
+
 ### Planning Phase Rules
 - Create explicit, numbered steps for all generation activities
 - Include story traceability in the plan
 - Document unit context and dependencies
 - Get explicit user approval before generation
+- Scope each step to the minimum code that satisfies its mapped stories (see Simplicity First)
 
 ### Generation Phase Rules
 - **NO HARDCODED LOGIC**: Only execute what's written in the unit plan
@@ -202,6 +223,7 @@ This stage generates code for each unit of work through two integrated parts:
 - **UPDATE CHECKBOXES**: Mark [x] immediately after completing each step
 - **STORY TRACEABILITY**: Mark unit stories [x] when functionality is implemented
 - **RESPECT DEPENDENCIES**: Only implement when unit dependencies are satisfied
+- **SURGICAL CHANGES**: Touch only files the plan names; no opportunistic refactors of adjacent code (see Surgical Changes)
 
 ### Automation Friendly Code Rules
 When generating UI code (web, mobile, desktop), ensure elements are automation-friendly:
