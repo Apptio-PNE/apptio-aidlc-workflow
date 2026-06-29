@@ -16,7 +16,7 @@ This workflow **cannot be triggered independently by the user**. It is activated
 
 ### Project Reference
 
-All team-specific configuration — repository names, project keys, base branches, API contract paths, PR template paths, build commands, GitHub owner, knowledge base sources — lives in `reference.md`.
+All team-specific configuration — repository names, project keys, base branches, API contract paths, PR template paths, build commands, GitHub owner, knowledge base sources — lives in `reference.md` (in this folder).
 
 Throughout this workflow, instructions like "see *Repositories* in `reference.md`" mean: read that exact section heading in the reference file and use the values found there. Do NOT hard-code repository names, branch names, project keys, or file paths in your responses — always pull them from the reference.
 
