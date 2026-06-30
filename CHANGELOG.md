@@ -10,6 +10,26 @@ The current version, release date, shipped paths, and compatibility metadata liv
 
 ### Added
 
+- **Bug Fix Workflow.** Structured, multi-phase workflow for resolving bug
+  tickets across multi-repo workspaces. Activated by `core-workflow.md` when
+  a Jira bug ticket is detected. Shipped at
+  `.kiro/aws-aidlc-rule-details/bugfix/` and mirrored under
+  `.bob/aws-aidlc-rule-details/bugfix/`:
+  - `workflow.md` — eight-phase process (Reference Setup → Information
+    Gathering → Root Cause Analysis → Solution Proposal → Scope &
+    Tickets → Implementation → PR Creation → Completion) with approval
+    gates, Jira/GitHub MCP integration, and state tracking.
+  - `standards.md` — behavioral guidelines for LLM implementation
+    discipline during bug fixes (Think Before Coding, Simplicity First,
+    Surgical Changes, Goal-Driven Execution). Loaded via `#[[file:...]]`
+    at Phase 6.
+  - `reference.md` — auto-generated team configuration file (repos, base
+    branches, project keys, PR templates, build commands). Created by
+    Phase 1 on first run via workspace scanning + user prompts.
+  - `core-workflow.md` updated with Bug Fix Routing stage that detects
+    Jira bug tickets and offers the streamlined workflow as an alternative
+    to the full AI-DLC lifecycle.
+
 - **UX Screens stage (Inception).** New conditional INCEPTION stage that runs
   **immediately after Requirements Analysis, before User Stories**, for
   user-facing work. Requirements are always drafted first; the stage then sources
