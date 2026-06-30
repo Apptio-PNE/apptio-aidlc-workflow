@@ -87,7 +87,8 @@ All subsequent rule detail file references (e.g., `common/process-overview.md`, 
 **Focus**: Determine WHAT to build and WHY
 
 **Stages in INCEPTION PHASE**:
-- Workspace Detection (ALWAYS)
+- Bug Fix Routing (CONDITIONAL - when Jira bug ticket is detected)
+- Workspace Detection (CONDITIONAL - skipped if Bug Fix Workflow is chosen)
 - Reverse Engineering (CONDITIONAL - Brownfield only)
 - Requirements Analysis (ALWAYS - Adaptive depth)
 - UX Screens (CONDITIONAL)
@@ -98,7 +99,45 @@ All subsequent rule detail file references (e.g., `common/process-overview.md`, 
 
 ---
 
-## Workspace Detection (ALWAYS EXECUTE)
+## Bug Fix Routing (CONDITIONAL - Jira Bug Ticket Detected)
+
+**Execute IF**:
+- The user's prompt contains a Jira ticket ID
+- The issue type of that ticket (fetched via `mcp_jira_get_issue`) is **Bug**
+
+**Skip IF**:
+- No Jira ticket is present in the user's prompt
+- The Jira ticket's issue type is NOT Bug (e.g., Story, Task, Epic)
+- If skipped, proceed with the full core-workflow starting from Workspace Detection
+
+**When this stage executes, Workspace Detection is entirely skipped (the workspace is known to be brownfield). The following steps apply:**
+
+1. **Offer Reverse Engineering choice** — present the user with:
+   ```markdown
+   This appears to be a bug fix (based on ticket [TICKET-ID]).
+
+   Would you like me to perform **Reverse Engineering** of the codebase first?
+   - **Yes** — I'll analyze the codebase structure, architecture, and components before proceeding.
+   - **Skip** — I'll skip reverse engineering (suitable for small, well-understood bugs).
+   ```
+   Wait for the user's response. If "Yes", execute the Reverse Engineering stage (see below). If "Skip", move to step 2.
+
+2. **Offer workflow choice** — after reverse engineering completes (or is skipped), present:
+   ```markdown
+   How would you like to proceed?
+   - **Continue with full AI-DLC workflow** — I'll run the complete structured development lifecycle (Requirements → Design → Code Generation → Build & Test).
+   - **Switch to Bug Fix Workflow** — I'll use the streamlined bug-fix workflow designed specifically for defect resolution (Information Gathering → Root Cause → Solution → Implementation → PR).
+   ```
+   Wait for the user's response.
+
+3. **If user chooses Bug Fix Workflow:**
+   - Do NOT create any `aidlc-docs/` state or audit files. If any were already created, remove them.
+   - Load and execute the Bug Fix Workflow from `bugfix/workflow.md` (in the rule details directory). The core-workflow is fully exited — do NOT return to it.
+
+4. **If user chooses full AI-DLC workflow:**
+   - Proceed with the standard core-workflow starting from Workspace Detection (which will detect brownfield). The Reverse Engineering stage is NOT re-executed if it was already completed in step 1.
+
+## Workspace Detection (CONDITIONAL - skipped if Bug Fix Workflow is chosen)
 
 1. **MANDATORY**: Log initial user request in audit.md with complete raw input
 2. Load all steps from `inception/workspace-detection.md`
